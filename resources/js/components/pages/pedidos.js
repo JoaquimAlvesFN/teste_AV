@@ -10,7 +10,7 @@ useEffect(() => {
     .get('/api/pedidos')
     .then(res => {
         if(res.data.code >= 400){
-            setErro(res.data.raw_body);
+            setErro(res.data.body.retorno.erros.erro.msg);
         }else{
             setData(res.data.body.retorno.pedidos);
         }
