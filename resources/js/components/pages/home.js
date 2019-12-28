@@ -11,7 +11,7 @@ useEffect(() => {
     .get('/api/produtos')
     .then(res => {
         if(res.data.code >= 400){
-            setErro(res.data.body.retorno.erros.erro.msg);
+            setErro(res.data.raw_body);
         }else{
             setData(res.data.body.retorno.produtos);
         }
