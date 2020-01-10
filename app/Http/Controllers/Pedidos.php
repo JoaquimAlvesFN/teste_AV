@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Unirest;
+use Spatie\ArrayToXml\ArrayToXml;
 
 class Pedidos extends Controller
 {
@@ -44,7 +45,14 @@ class Pedidos extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->pedido[0];
+        $dataArray = ArrayToXml::convert($data,['rootElementName' => 'pedido',], true, 'UTF-8');
+        dd($dataArray);
+
+        /*$headers = array('Accept' => 'application/json');
+        $body = $resultArray;
+        $data = Unirest\Request::post($this->url, $headers, $body);
+        dd($data);*/
     }
 
     /**
