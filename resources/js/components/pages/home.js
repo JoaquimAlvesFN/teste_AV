@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Alert } from 'reactstrap';
+import { Alert, Button } from 'reactstrap';
 
-export default function Home() {
+export default function Home({ history }) {
 const [data, setData] = useState([]);
-const [erro, setErro] = useState(false);
+const [erro, setErro] = useState('');
 
 useEffect(() => {
     axios
     .get('/api/produtos')
     .then(res => {
         if(res.data.code >= 400){
-            setErro(res.data.raw_body);
+            setErro(res.data.body);
         }else{
             setData(res.data.body.retorno.produtos);
         }
@@ -21,7 +21,14 @@ useEffect(() => {
 
   return (
     <div className="container">
-        <p>Produtos</p>
+        <p>Produtos&nbsp;
+            <Button
+                color="primary"
+                onClick={() => {history.push('/cadastrarProduto')}}
+            >
+                Cadastrar Produto
+            </Button>
+        </p>
             {
                 erro ? <Alert color="danger">{erro}</Alert> :
             <table class="table">
