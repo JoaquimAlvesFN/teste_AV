@@ -15,14 +15,14 @@ import {
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import Home from './components/pages/home';
-import Pedidos from './components/pages/pedidos';
-import Notas from './components/pages/notas';
+import Home from './components/pages/Produtos/home';
+import Pedidos from './components/pages/Pedidos/pedidos';
+import Notas from './components/pages/Notas/notas';
 
-import ImplantarPedido from './components/pages/implantarPedido';
-import VerPedido from './components/pages/verPedido';
+import ImplantarPedido from './components/pages/Pedidos/implantarPedido';
+import VerPedido from './components/pages/Pedidos/verPedido';
 
-import CadastrarProduto from './components/pages/cadastrarProduto';
+import CadastrarProduto from './components/pages/Produtos/cadastrarProduto';
 
 export default function Index() {
         return (
@@ -32,18 +32,18 @@ export default function Index() {
                             <NavbarBrand href="/">Aumenta Venda</NavbarBrand>
                             <Nav className="mr-auto" navbar>
                                 <NavItem>
-                                    <NavLink>
-                                        <Link to="/">Produtos</Link>
+                                    <NavLink tag={Link} to="/">
+                                        Produtos
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink>
-                                        <Link to="/pedidos">Pedidos</Link>
+                                    <NavLink tag={Link} to="/pedidos">
+                                        Pedidos
                                     </NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink>
-                                        <Link to="/notas">Notas Fiscais</Link>
+                                    <NavLink tag={Link} to="/notas">
+                                        Notas Fiscais
                                     </NavLink>
                                 </NavItem>
                             </Nav>

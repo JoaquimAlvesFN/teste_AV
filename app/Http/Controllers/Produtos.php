@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Unirest;
+use Spatie\ArrayToXml\ArrayToXml;
+use DOMDocument;
 
 class Produtos extends Controller
 {
     public function __construct()
     {
-        $baseURL = "https://bling.com.br/Api/v2/produtos/json/?";
-        $key = env('BLING_KEY');
-
-        $this->url = $baseURL.$key;
+        $this->urlGet = env('BASE_URL')."/produtos/json/";
+        $this->urlPost = env('BASE_URL')."/produto/json/";
+        $this->apikey = env('BLING_KEY');
     }
     /**
      * Display a listing of the resource.
@@ -21,7 +22,8 @@ class Produtos extends Controller
      */
     public function index()
     {
-        $index = Unirest\Request::get($this->url, null, null);
+        $body = array("apikey" => $this->apikey);
+        $index = Unirest\Request::get($this->urlGet, null, $body);
 
         return response()->json($index);
     }
@@ -44,7 +46,22 @@ class Produtos extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->produto[0];
+        $dataArray = ArrayToXml::convert($data,['rootElementName' => 'produto',], true, 'UTF-8');
+
+        $doc = new DOMDocument();
+        $doc->loadXML($dataArray);
+        $xml = $doc->saveXML();
+
+        //dd($xml);
+
+        $headers = array('Accept' => 'application/json');
+        $body = array('apikey' => $this->apikey,
+                        'xml' => rawurlencode($xml)
+                    );
+
+        $data = Unirest\Request::post($this->urlPost, $headers, $body);
+        dd($data);
     }
 
     /**

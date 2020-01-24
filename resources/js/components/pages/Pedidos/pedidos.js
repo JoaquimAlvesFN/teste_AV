@@ -34,7 +34,7 @@ useEffect(() => {
                         <tr>
                             <th scope="col">Cód</th>
                             <th scope="col">Cliente</th>
-                            <th scope="col">Situacao</th>
+                            <th scope="col">Situação</th>
                             <th scope="col">Valor Pedido</th>
                             <th>Ver / Editar / Excluir</th>
                         </tr>

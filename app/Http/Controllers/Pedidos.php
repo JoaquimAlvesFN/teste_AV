@@ -11,10 +11,10 @@ class Pedidos extends Controller
 {
     public function __construct()
     {
-        $this->urlGet = "https://bling.com.br/Api/v2/pedidos/json/";
-        $this->urlPost = "https://bling.com.br/Api/v2/pedido/json/";
-        $this->urlGetId = "https://bling.com.br/Api/v2/pedido/";
-        $this->apikey = "d5b1b13ec2ea2c66d4bbe8e1a02ac45fe16014d9f7fc85dcd178ea50d707185b93ef47f7";
+        $this->urlGet = env('BASE_URL')."/pedidos/json/";
+        $this->urlPost = env('BASE_URL')."/pedido/json/";
+        $this->urlGetId = env('BASE_URL')."/pedido";
+        $this->apikey = env('BLING_KEY');
     }
     /**
      * Display a listing of the resource.
@@ -47,8 +47,7 @@ class Pedidos extends Controller
      */
     public function store(Request $request)
     {
-        echo $request;
-        /*$data = $request->pedido[0];
+        $data = $request->pedido[0];
         $dataArray = ArrayToXml::convert($data,['rootElementName' => 'pedido',], true, 'UTF-8');
 
         $doc = new DOMDocument();
@@ -59,8 +58,7 @@ class Pedidos extends Controller
         $body = array('apikey' => $this->apikey,
                         'xml' => rawurlencode($xml)
                     );
-        $data = Unirest\Request::post($this->urlPost, $headers, $body);
-        dd($data);*/
+        Unirest\Request::post($this->urlPost, $headers, $body);
     }
 
     /**
@@ -72,7 +70,7 @@ class Pedidos extends Controller
     public function show($id)
     {
         $body = array("apikey" => $this->apikey);
-        $show = Unirest\Request::get($this->urlGetId."$id/json/", null, $body);
+        $show = Unirest\Request::get($this->urlGetId."/$id/json/", null, $body);
 
         return response()->json($show);
     }
