@@ -3,21 +3,35 @@ import axios from 'axios';
 import { Alert, Button } from 'reactstrap';
 
 export default function Home({ history }) {
-const [data, setData] = useState([]);
-const [erro, setErro] = useState('');
+    const [data, setData] = useState([]);
+    const [erro, setErro] = useState('');
 
-useEffect(() => {
-    axios
-    .get('/api/produtos')
-    .then(res => {
-        if(res.data.code >= 400){
-            setErro(res.data.body);
-        }else{
-            setData(res.data.body.retorno.produtos);
+    useEffect(() => {
+        async function loadProducts () {
+            await axios
+            .get('/api/produtos')
+            .then(res => {
+                console.log(res.data);
+                if(res.data.code >= 400){
+                    setErro(res.data.body);
+                }else{
+                    setData(res.data.body.retorno.produtos);
+                }
+            })
+            .catch(error => console.log(error))
         }
-    })
-    .catch(error => console.log(error))
-}, []);
+
+        loadProducts();
+    }, []);
+
+    const handleDelete = async (props) => {
+        await axios
+        .delete(`/api/produtos/${props.codigo}`)
+        .then(res => console.log(res))
+        .catch(err => console.log(err));
+
+        loadProducts();
+    }
 
   return (
     <div className="container">
@@ -51,7 +65,7 @@ useEffect(() => {
                             <td>
                                 <Button color="success">Ver</Button>&nbsp;
                                 <Button color="primary">Editar</Button>&nbsp;
-                                <Button color="danger">Excluir</Button>
+                                <Button onClick={() => handleDelete(result.produto.codigo)} color="danger">Excluir</Button>
                             </td>
                         </tr>
                     </tbody>

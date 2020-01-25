@@ -13,6 +13,7 @@ class Produtos extends Controller
     {
         $this->urlGet = env('BASE_URL')."/produtos/json/";
         $this->urlPost = env('BASE_URL')."/produto/json/";
+        $this->urlDel = env('BASE_URL')."/produto";
         $this->apikey = env('BLING_KEY');
     }
     /**
@@ -108,6 +109,9 @@ class Produtos extends Controller
      */
     public function destroy($id)
     {
-        //
+        $body = array("apikey" => $this->apikey);
+        $delete = Unirest\Request::delete($this->urlDel."/$id", null, $body);
+
+        dd($delete);
     }
 }

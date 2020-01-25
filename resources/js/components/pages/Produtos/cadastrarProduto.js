@@ -3,6 +3,9 @@ import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 import axios from 'axios';
 
 export default function CadastrarProduto({ history }) {
+    const [codigo, setCodigo] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [valor, setValor] = useState('');
 
     const handleSave = (e) => {
         e.preventDefault();
@@ -10,13 +13,13 @@ export default function CadastrarProduto({ history }) {
         .post('/api/produtos', {
             "produto":[
                 {
-                    "codigo":"223435780",
-                    "descricao":"Caneta Azul",
+                    "codigo": codigo,
+                    "descricao":descricao,
                     "situacao":"Ativo",
                     "descricaoCurta":"teste",
                     "descricaoComplementar":"teste",
                     "un":"teste",
-                    "vlr_unit":"10",
+                    "vlr_unit":valor,
                     "preco_custo":"5",
                     "peso_bruto":"5",
                     "peso_liq":"5",
@@ -67,10 +70,9 @@ export default function CadastrarProduto({ history }) {
             ]
         })
         .then(res => {
-            console.log(res);
-            /*if (res.status == 200) {
+            if (res.status == 200) {
                 history.push('/');
-            }*/
+            }
         })
         .catch(err => console.log(err));
     }
@@ -80,6 +82,18 @@ export default function CadastrarProduto({ history }) {
         <p>Cadastro de Produto</p>
         <div>
             <Form onSubmit={handleSave}>
+                <FormGroup>
+                    <Label for="codigo">Código</Label>
+                    <Input type="text" name="codigo" id="codigo" value={codigo} onChange={e => setCodigo(e.target.value)}/>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="descricao">Descrição</Label>
+                    <Input type="text" name="descricao" id="descricao" value={descricao} onChange={e => setDescricao(e.target.value)}/>
+                </FormGroup>
+                <FormGroup>
+                    <Label for="=valor">Valor</Label>
+                    <Input type="text" name="=valor" id="=valor" value={valor} onChange={e => setValor(e.target.value)}/>
+                </FormGroup>
                 <Button type="submit" color="primary">Enviar</Button> &nbsp;
                 <Button onClick={() => {history.goBack()}} color="danger">Cancelar</Button>
             </Form>
