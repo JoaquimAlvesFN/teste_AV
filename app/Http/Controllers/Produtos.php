@@ -13,6 +13,8 @@ class Produtos extends Controller
     {
         $this->urlGet = env('BASE_URL')."/produtos/json/";
         $this->urlPost = env('BASE_URL')."/produto/json/";
+        $this->urlGetId = env('BASE_URL')."/produto";
+        $this->urlPut = env('BASE_URL')."/produto";
         $this->urlDel = env('BASE_URL')."/produto";
         $this->apikey = env('BLING_KEY');
     }
@@ -54,8 +56,6 @@ class Produtos extends Controller
         $doc->loadXML($dataArray);
         $xml = $doc->saveXML();
 
-        //dd($xml);
-
         $headers = array('Accept' => 'application/json');
         $body = array('apikey' => $this->apikey,
                         'xml' => rawurlencode($xml)
@@ -73,7 +73,8 @@ class Produtos extends Controller
      */
     public function show($id)
     {
-        $show = Unirest\Request::get($this->url, null, null);
+        $body = array("apikey" => $this->apikey);
+        $show = Unirest\Request::get($this->urlGetId."/$id/json/", null, $body);
 
         return response()->json($show);
     }
@@ -98,7 +99,22 @@ class Produtos extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->produto[0];
+        $dataArray = ArrayToXml::convert($data,['rootElementName' => 'produto',], true, 'UTF-8');
+
+        $doc = new DOMDocument();
+        $doc->loadXML($dataArray);
+        $xml = $doc->saveXML();
+
+        //dd($xml);
+
+        $headers = array('Accept' => 'application/json');
+        $body = array('apikey' => $this->apikey,
+                        'xml' => rawurlencode($xml)
+                    );
+
+        $data = Unirest\Request::post($this->urlPut."/$id/json", $headers, $body);
+        dd($data);
     }
 
     /**

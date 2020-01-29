@@ -55,8 +55,10 @@ export default function Home({ history }) {
                             <th>Ver / Editar / Excluir</th>
                         </tr>
                     </thead>
-                {data.map((result) => (
-                    <tbody>
+                {
+                    data != false &&
+                    data.map((result) => (
+                    <tbody key={result.produto.codigo}>
                         <tr>
                             <th scope="row">{result.produto.codigo}</th>
                             <td>{result.produto.descricao}</td>
@@ -64,7 +66,7 @@ export default function Home({ history }) {
                             <td>{result.produto.situacao}</td>
                             <td>
                                 <Button color="success">Ver</Button>&nbsp;
-                                <Button color="primary">Editar</Button>&nbsp;
+                                <Button onClick={() => history.push(`/editarProduto/${result.produto.codigo}`)} color="primary">Editar</Button>&nbsp;
                                 <Button onClick={() => handleDelete(result.produto.codigo)} color="danger">Excluir</Button>
                             </td>
                         </tr>

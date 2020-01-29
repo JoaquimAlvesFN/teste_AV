@@ -26,13 +26,6 @@ export default function CadastrarProduto({ history }) {
                     "class_fiscal":"1000.01.01",
                     "marca":"sem marca",
                     "origem":"0",
-                    "estoque":"100",
-                    /*"deposito":[
-                        {
-                            "id":"",
-                            "estoque":"",
-                        }
-                    ],*/
                     "gtin":"223435780",
                     "gtinEmbalagem":"54546",
                     "largura":"11",
@@ -56,16 +49,16 @@ export default function CadastrarProduto({ history }) {
                     "itensPorCaixa":"2",
                     "volumes":"2",
                     "urlVideo":"",
-                    "imagens":[
+                    "variacao": [
                         {
-                            "url":"",
+                            "estoque": [
+                                {
+                                    "id":203391139,
+                                    "estoque":100.00
+                                }
+                            ]
                         }
-                    ],
-                    "camposCustomizados":[
-                        {
-
-                        }
-                    ],
+                    ]
                 }
             ]
         })

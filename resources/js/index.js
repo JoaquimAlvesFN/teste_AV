@@ -23,6 +23,7 @@ import ImplantarPedido from './components/pages/Pedidos/implantarPedido';
 import VerPedido from './components/pages/Pedidos/verPedido';
 
 import CadastrarProduto from './components/pages/Produtos/cadastrarProduto';
+import EditarProduto from './components/pages/Produtos/editarProduto';
 
 export default function Index() {
         return (
@@ -55,6 +56,7 @@ export default function Index() {
                             <Route path="/implantarPedido" exact component={ImplantarPedido} />
                             <Route path="/verPedido/:id" exact component={VerPedido} />
                             <Route path="/cadastrarProduto" exact component={CadastrarProduto} />
+                            <Route path="/editarProduto/:id" exact component={EditarProduto} />
                         </div>
                     </Router>
                 </div>
