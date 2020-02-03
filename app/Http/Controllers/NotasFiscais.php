@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Unirest;
+use Spatie\ArrayToXml\ArrayToXml;
+use DOMDocument;
 
 class NotasFiscais extends Controller
 {
     public function __construct()
     {
-        $baseURL = "https://bling.com.br/Api/v2/notasfiscais/json/?";
-        $key = env('BLING_KEY');
-
-        $this->url = $baseURL.$key;
+        $this->urlGet = env('BASE_URL')."/notasfiscais/json/";
+        $this->urlGetId = env('BASE_URL')."/notafiscal";
+        $this->urlPost = env('BASE_URL')."/notafiscal/json/";
+        $this->apikey = env('BLING_KEY');
     }
     /**
      * Display a listing of the resource.
@@ -21,7 +23,8 @@ class NotasFiscais extends Controller
      */
     public function index()
     {
-        $index = Unirest\Request::get($this->url, null, null);
+        $body = array("apikey" => $this->apikey);
+        $index = Unirest\Request::get($this->urlGet, null, $body);
 
         return response()->json($index);
     }
@@ -44,7 +47,22 @@ class NotasFiscais extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->pedido[0];
+        $dataArray = ArrayToXml::convert($data,['rootElementName' => 'pedido',], true, 'UTF-8');
+
+        $doc = new DOMDocument();
+        $doc->loadXML($dataArray);
+        $xml = $doc->saveXML();
+
+        //dd($xml);
+
+        $headers = array('Accept' => 'application/json');
+        $body = array('apikey' => $this->apikey,
+                        'xml' => rawurlencode($xml)
+                    );
+
+        $data = Unirest\Request::post($this->urlPost, $headers, $body);
+        dd($data);
     }
 
     /**
@@ -53,9 +71,10 @@ class NotasFiscais extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($num, $serie)
     {
-        $show = Unirest\Request::get($this->url, null, null);
+        $body = array("apikey" => $this->apikey);
+        $show = Unirest\Request::get($this->urlGetId."/$num/$serie/json", null, $body);
 
         return response()->json($show);
     }

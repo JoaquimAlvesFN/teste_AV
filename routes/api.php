@@ -15,4 +15,5 @@ use Illuminate\Http\Request;
 
 Route::resource('produtos', 'Produtos');
 Route::resource('pedidos', 'Pedidos');
+Route::get('notas/{num}/{serie}', 'NotasFiscais@show');
 Route::resource('notas', 'NotasFiscais');
