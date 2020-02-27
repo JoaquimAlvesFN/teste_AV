@@ -3,21 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Unirest;
-use Spatie\ArrayToXml\ArrayToXml;
-use DOMDocument;
+use App\Produto;
 
 class Produtos extends Controller
 {
-    public function __construct()
-    {
-        $this->urlGet = env('BASE_URL')."/produtos/json/";
-        $this->urlPost = env('BASE_URL')."/produto/json/";
-        $this->urlGetId = env('BASE_URL')."/produto";
-        $this->urlPut = env('BASE_URL')."/produto";
-        $this->urlDel = env('BASE_URL')."/produto";
-        $this->apikey = env('BLING_KEY');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,10 +14,9 @@ class Produtos extends Controller
      */
     public function index()
     {
-        $body = array("apikey" => $this->apikey);
-        $index = Unirest\Request::get($this->urlGet, null, $body);
+        $produto = Produto::all();
 
-        return response()->json($index);
+        return response()->json($produto);
     }
 
     /**
@@ -49,20 +37,7 @@ class Produtos extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->produto[0];
-        $dataArray = ArrayToXml::convert($data,['rootElementName' => 'produto',], true, 'UTF-8');
-
-        $doc = new DOMDocument();
-        $doc->loadXML($dataArray);
-        $xml = $doc->saveXML();
-
-        $headers = array('Accept' => 'application/json');
-        $body = array('apikey' => $this->apikey,
-                        'xml' => rawurlencode($xml)
-                    );
-
-        $data = Unirest\Request::post($this->urlPost, $headers, $body);
-        dd($data);
+        dd($request->produto);
     }
 
     /**
@@ -73,10 +48,9 @@ class Produtos extends Controller
      */
     public function show($id)
     {
-        $body = array("apikey" => $this->apikey);
-        $show = Unirest\Request::get($this->urlGetId."/$id/json/", null, $body);
+        $produto = Produto::where('codigo', '=', $id)->first();
 
-        return response()->json($show);
+        return response()->json($produto);
     }
 
     /**
@@ -99,7 +73,7 @@ class Produtos extends Controller
      */
     public function update(Request $request, $id)
     {
-        $data = $request->produto[0];
+        /*$data = $request->produto[0];
         $dataArray = ArrayToXml::convert($data,['rootElementName' => 'produto',], true, 'UTF-8');
 
         $doc = new DOMDocument();
@@ -114,7 +88,7 @@ class Produtos extends Controller
                     );
 
         $data = Unirest\Request::post($this->urlPut."/$id/json", $headers, $body);
-        dd($data);
+        dd($data);*/
     }
 
     /**
@@ -125,9 +99,9 @@ class Produtos extends Controller
      */
     public function destroy($id)
     {
-        $body = array("apikey" => $this->apikey);
+        /*$body = array("apikey" => $this->apikey);
         $delete = Unirest\Request::delete($this->urlDel."/$id", null, $body);
 
-        dd($delete);
+        dd($delete);*/
     }
 }
